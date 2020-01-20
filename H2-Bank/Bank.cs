@@ -26,7 +26,7 @@ namespace H2_Bank
         public void CreateAccount(string navn)
         {
             ++AccountNo;
-            Accounts.Add(new Account(navn, AccountNo));
+            Accounts.Add(new CheckingAccount(navn, AccountNo));
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace H2_Bank
         public void Deposit(decimal amount, int accountno)
         {
             Account searchAcc = Accounts.Find(x => x.AccountNo == accountno);
-            searchAcc.BankBalance += amount;
+            searchAcc.AccountBalance += amount;
 
         }
 
@@ -49,7 +49,7 @@ namespace H2_Bank
         public void Withdraw(decimal amount, int accountno)
         {
             Account searchAcc = Accounts.Find(x => x.AccountNo == accountno);
-            searchAcc.BankBalance -= amount;
+            searchAcc.AccountBalance -= amount;
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace H2_Bank
         public decimal Balance(int accountno)
         {
             Account searchAcc = Accounts.Find(x => x.AccountNo == accountno);
-            return searchAcc.BankBalance;
+            return searchAcc.AccountBalance;
         }
     }
 }

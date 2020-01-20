@@ -28,7 +28,7 @@ namespace H2_Bank
                         string accNameInput = Console.ReadLine();
                         myBank.CreateAccount(accNameInput);
                         Console.WriteLine();
-                        Console.Write("Du har oprettet en konto der hedder {0}, den fik kontonummer {1}. Tast enter for at fortsætte", accNameInput, myBank.Accounts.Find(s => s.Name == accNameInput).AccountNo);
+                        Console.Write("Du har oprettet en konto der hedder {0}, den fik kontonummer {1}. Tast enter for at fortsætte", accNameInput, myBank.Accounts.Find(s => s.AccountHolder == accNameInput).AccountNo);
                         Console.ReadKey(true);
                         break;
                     case ConsoleKey.I:
@@ -36,7 +36,7 @@ namespace H2_Bank
                         Console.WriteLine("Vælg hvilken konto du vil indsætte penge på:");
                         foreach (Account item in myBank.Accounts)
                         {
-                            Console.WriteLine(item.AccountNo + " " + item.Name);
+                            Console.WriteLine(item.AccountNo + " " + item.AccountHolder);
                         }
                         Console.Write("Indtast kontonummer: ");
                         accountNumInput = Console.ReadLine();
@@ -60,7 +60,7 @@ namespace H2_Bank
                         Console.Write("Vælg hvilken konto du vil hæve fra:");
                         foreach (Account item in myBank.Accounts)
                         {
-                            Console.WriteLine(item.AccountNo + " " + item.Name);
+                            Console.WriteLine(item.AccountNo + " " + item.AccountHolder);
                         }
                         Console.Write("Indtast kontonummer: ");
                         accountNumInput = Console.ReadLine();
@@ -84,13 +84,13 @@ namespace H2_Bank
                         Console.WriteLine("Vælg hvilken konto du vil se saldo for:");
                         foreach (Account item in myBank.Accounts)
                         {
-                            Console.WriteLine(item.AccountNo + " " + item.Name);
+                            Console.WriteLine(item.AccountNo + " " + item.AccountHolder);
                         }
                         Console.Write("Indtast kontonummer: ");
                         accountNumInput = Console.ReadLine();
                         try
                         {
-                            Console.WriteLine("Saldoen på {0} er: {1}", myBank.Accounts.Find(s => s.AccountNo == Convert.ToInt16(accountNumInput)).Name, myBank.Balance(Convert.ToInt16(accountNumInput)));
+                            Console.WriteLine("Saldoen på {0} er: {1}", myBank.Accounts.Find(s => s.AccountNo == Convert.ToInt16(accountNumInput)).AccountHolder, myBank.Balance(Convert.ToInt16(accountNumInput)));
                         }
                         catch (Exception ex)
                         {
