@@ -7,8 +7,10 @@ namespace H2_Bank
     {
         static void Main(string[] args)
         {
-            string hardcode;
+            string accountNumInput;
+            string decimalInput;
             ConsoleKeyInfo menuKey;
+
 
             Bank myBank = new Bank("Jan's Bank");
             do
@@ -23,18 +25,26 @@ namespace H2_Bank
                     case ConsoleKey.O:
                         Console.WriteLine();
                         Console.Write("Indtast navn på kontohaver: ");
-                        myBank.CreateAccount(Console.ReadLine());
+                        string accNameInput = Console.ReadLine();
+                        myBank.CreateAccount(accNameInput);
                         Console.WriteLine();
-                        Console.Write("Du har oprettet en konto i {0}'s navn. Tast enter for at fortsætte", myBank.Konto.Name);
+                        Console.Write("Du har oprettet en konto der hedder {0}, den fik kontonummer {1}. Tast enter for at fortsætte", accNameInput, myBank.Accounts.Find(s => s.Name == accNameInput).AccountNo);
                         Console.ReadKey(true);
                         break;
                     case ConsoleKey.I:
                         Console.WriteLine();
-                        Console.WriteLine("Indsæt beløb på {0}'s konto: ", myBank.Konto.Name);
-                        hardcode = Console.ReadLine();
+                        Console.WriteLine("Vælg hvilken konto du vil indsætte penge på:");
+                        foreach (Account item in myBank.Accounts)
+                        {
+                            Console.WriteLine(item.AccountNo + " " + item.Name);
+                        }
+                        Console.Write("Indtast kontonummer: ");
+                        accountNumInput = Console.ReadLine();
+                        Console.Write("Indtast beløb: ");
+                        decimalInput = Console.ReadLine();
                         try
                         {
-                            myBank.Deposit(Convert.ToDecimal(hardcode));
+                            myBank.Deposit(Convert.ToDecimal(decimalInput), myBank.Accounts.Find(s => s.AccountNo == Convert.ToInt16(accountNumInput)).AccountNo);
                         }
                         catch (Exception ex)
                         {
@@ -42,16 +52,23 @@ namespace H2_Bank
                             Console.WriteLine(ex.Message);
                             Console.WriteLine("Prøv venligst igen.");
                         }
-                        Console.WriteLine("Du har indsat {0}, saldoen er nu {1} - Tast enter for at fortsætte", hardcode, myBank.Balance());
+                        Console.WriteLine("Du har indsat {0}, saldoen er nu {1} - Tast enter for at fortsætte", decimalInput, myBank.Balance(Convert.ToInt16(accountNumInput)));
                         Console.ReadKey(true);
                         break;
                     case ConsoleKey.H:
                         Console.WriteLine();
-                        Console.Write("Hæv beløb på {0}'s konto: ", myBank.Konto.Name);
-                        hardcode = Console.ReadLine();
+                        Console.Write("Vælg hvilken konto du vil hæve fra:");
+                        foreach (Account item in myBank.Accounts)
+                        {
+                            Console.WriteLine(item.AccountNo + " " + item.Name);
+                        }
+                        Console.Write("Indtast kontonummer: ");
+                        accountNumInput = Console.ReadLine();
+                        Console.Write("Indtast beløb: ");
+                        decimalInput = Console.ReadLine();
                         try
                         {
-                            myBank.Withdraw(Convert.ToDecimal(hardcode));
+                            myBank.Withdraw(Convert.ToDecimal(decimalInput), myBank.Accounts.Find(s => s.AccountNo == Convert.ToInt16(accountNumInput)).AccountNo);
                         }
                         catch (Exception ex)
                         {
@@ -59,14 +76,28 @@ namespace H2_Bank
                             Console.WriteLine(ex.Message);
                             Console.WriteLine("Prøv venligst igen.");
                         }
-                        Console.Write("Du har hævet -{0}, saldoen er nu {1} - Tast enter for at fortsætte", hardcode, myBank.Balance());
+                        Console.WriteLine("Du har hævet -{0}, saldoen er nu {1} - Tast enter for at fortsætte", decimalInput, myBank.Balance(Convert.ToInt16(accountNumInput)));
                         Console.ReadKey(true);
                         break;
                     case ConsoleKey.V:
                         Console.WriteLine();
-                        Console.Write("Saldoen på {0}'s konto er: ", myBank.Konto.Name);
-                        Console.Write(myBank.Balance());
-                        Console.WriteLine();
+                        Console.WriteLine("Vælg hvilken konto du vil se saldo for:");
+                        foreach (Account item in myBank.Accounts)
+                        {
+                            Console.WriteLine(item.AccountNo + " " + item.Name);
+                        }
+                        Console.Write("Indtast kontonummer: ");
+                        accountNumInput = Console.ReadLine();
+                        try
+                        {
+                            Console.WriteLine("Saldoen på {0} er: {1}", myBank.Accounts.Find(s => s.AccountNo == Convert.ToInt16(accountNumInput)).Name, myBank.Balance(Convert.ToInt16(accountNumInput)));
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Der er desværre sket en fejl");
+                            Console.WriteLine(ex.Message);
+                            Console.WriteLine("Prøv venligst igen.");
+                        }
                         Console.WriteLine("Tast enter for at fortsætte");
                         Console.ReadKey(true);
                         break;

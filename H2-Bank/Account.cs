@@ -5,11 +5,13 @@ namespace H2_Bank
     {
         public string Name { get; }
         public decimal BankBalance { get; set; }
+        public int AccountNo { get; }
 
-        public Account(string name)
+        public Account(string name, int accno)
         {
             Name = name;
             BankBalance = 0;
+            AccountNo = accno;
         }
     }
 }
