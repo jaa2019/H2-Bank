@@ -22,11 +22,23 @@ namespace H2_Bank
         /// <summary>
         /// Opretter en konto
         /// </summary>
-        /// <param name="navn">Navnet på kontoen</param>
-        public void CreateAccount(string navn)
+        /// <param name="navn">Navn på kontoholder</param>
+        /// <param name="type">Type af konto</param>
+        public void CreateAccount(string navn, int type)
         {
             ++AccountNo;
-            Accounts.Add(new CheckingAccount(navn, AccountNo));
+            if (type == 1)
+            {
+                Accounts.Add(new CheckingAccount(navn, AccountNo));
+            }
+            else if (type == 2)
+            {
+                Accounts.Add(new MasterCardAccount(navn, AccountNo));
+            }
+            else if (type == 3)
+            {
+                Accounts.Add(new SavingsAccount(navn, AccountNo));
+            }
         }
 
         /// <summary>
@@ -56,7 +68,7 @@ namespace H2_Bank
         /// Viser saldo på den konto der er valgt
         /// </summary>
         /// <param name="accountno">Kont</param>
-        /// <returns></returns>
+        /// <returns>Decimal (kontobalance)</returns>
         public decimal Balance(int accountno)
         {
             Account searchAcc = Accounts.Find(x => x.AccountNo == accountno);

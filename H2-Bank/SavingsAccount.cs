@@ -3,11 +3,16 @@ namespace H2_Bank
 {
     public class SavingsAccount : Account
     {
+        /// <summary>
+        /// Opretter en opsparingskonto
+        /// </summary>
+        /// <param name="name"></param>
         public SavingsAccount(string name, int accno)
         {
             AccountHolder = name;
             AccountNo = accno;
             AccountBalance = 0;
+            AccountType = "Opsparingskonto";
         }
 
         public override void ChargeInterest()

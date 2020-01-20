@@ -26,14 +26,19 @@ namespace H2_Bank
                         Console.WriteLine();
                         Console.Write("Indtast navn på kontohaver: ");
                         string accNameInput = Console.ReadLine();
-                        myBank.CreateAccount(accNameInput);
+                        Console.WriteLine("[1] - Lønkonto");
+                        Console.WriteLine("[2] - Kreditkortkonto");
+                        Console.WriteLine("[3] - Opsparingskonto");
+                        Console.Write("Indtast kontotype: ");
+                        int accTypeInput = Convert.ToInt16(Console.ReadLine());
+                        myBank.CreateAccount(accNameInput, accTypeInput);
                         Console.WriteLine();
-                        Console.Write("Du har oprettet en konto der hedder {0}, den fik kontonummer {1}. Tast enter for at fortsætte", accNameInput, myBank.Accounts.Find(s => s.AccountHolder == accNameInput).AccountNo);
+                        Console.Write("Du har oprettet en {0} i {1}'s navn, den fik kontonummer {2}. Tast enter for at fortsætte", myBank.Accounts.Find(s => s.AccountHolder == accNameInput).AccountType, accNameInput, myBank.Accounts.Find(s => s.AccountHolder == accNameInput).AccountNo);
                         Console.ReadKey(true);
                         break;
                     case ConsoleKey.I:
                         Console.WriteLine();
-                        Console.WriteLine("Vælg hvilken konto du vil indsætte penge på:");
+                        Console.WriteLine("Vælg hvilken konto du vil indsætte penge på: ");
                         foreach (Account item in myBank.Accounts)
                         {
                             Console.WriteLine(item.AccountNo + " " + item.AccountHolder);
