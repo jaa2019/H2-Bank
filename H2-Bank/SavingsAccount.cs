@@ -19,15 +19,15 @@ namespace H2_Bank
         {
             if (AccountBalance < 50000)
             {
-                AccountBalance = AccountBalance * 0.01m;
+                AccountBalance = AccountBalance * 1.01m;
             }
             else if (AccountBalance > 50000 && AccountBalance < 100000)
             {
-                AccountBalance = AccountBalance * 0.02m;
+                AccountBalance = AccountBalance * 1.02m;
             }
             else if (AccountBalance > 100000)
             {
-                AccountBalance = AccountBalance * 0.03m;
+                AccountBalance = AccountBalance * 1.03m;
             }
         }
     }

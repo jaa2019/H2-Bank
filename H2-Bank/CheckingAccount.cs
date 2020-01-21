@@ -17,7 +17,7 @@ namespace H2_Bank
 
         public override void ChargeInterest()
         {
-            AccountBalance = AccountBalance * 0.05m;
+            AccountBalance = AccountBalance * 1.005m;
         }
     }
 }

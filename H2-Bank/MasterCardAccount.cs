@@ -19,7 +19,7 @@ namespace H2_Bank
         {
             if (AccountBalance > 0)
             {
-                AccountBalance = AccountBalance * 0.001m;
+                AccountBalance = AccountBalance * 1.001m;
             }
             else
             {

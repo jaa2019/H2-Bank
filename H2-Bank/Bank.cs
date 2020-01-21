@@ -74,5 +74,17 @@ namespace H2_Bank
             Account searchAcc = Accounts.Find(x => x.AccountNo == accountno);
             return searchAcc.AccountBalance;
         }
+
+        /// <summary>
+        /// Tilskriver rente på konti
+        /// </summary>
+        public void Interest()
+        {
+            foreach (Account item in Accounts)
+            {
+                item.ChargeInterest();
+                //TODO Rente skrives forkert.
+            }
+        }
     }
 }
