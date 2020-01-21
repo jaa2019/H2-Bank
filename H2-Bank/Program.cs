@@ -42,7 +42,7 @@ namespace H2_Bank
                         Console.WriteLine("Vælg hvilken konto du vil indsætte penge på: ");
                         foreach (Account item in myBank.Accounts)
                         {
-                            Console.WriteLine(item.AccountNo + " " + item.AccountHolder);
+                            Console.WriteLine("{0} - {1} - {2}",item.AccountNo,item.AccountType,item.AccountHolder);
                         }
                         Console.Write("Indtast kontonummer: ");
                         accountNumInput = Console.ReadLine();
@@ -66,7 +66,7 @@ namespace H2_Bank
                         Console.WriteLine("Vælg hvilken konto du vil hæve fra:");
                         foreach (Account item in myBank.Accounts)
                         {
-                            Console.WriteLine(item.AccountNo + " " + item.AccountHolder);
+                            Console.WriteLine("{0} - {1} - {2}", item.AccountNo, item.AccountType, item.AccountHolder);
                         }
                         Console.Write("Indtast kontonummer: ");
                         accountNumInput = Console.ReadLine();
@@ -88,21 +88,32 @@ namespace H2_Bank
                     case ConsoleKey.V:
                         Console.WriteLine();
                         Console.WriteLine("Vælg hvilken konto du vil se saldo for:");
+                        Console.WriteLine("[A]lle konti");
                         foreach (Account item in myBank.Accounts)
                         {
                             Console.WriteLine(item.AccountNo + " " + item.AccountHolder);
                         }
                         Console.Write("Indtast kontonummer: ");
                         accountNumInput = Console.ReadLine();
-                        try
+                        if (accountNumInput == "A" | accountNumInput == "a")
                         {
-                            Console.WriteLine("Saldoen på {0} ({1}) er: {2}", myBank.Accounts.Find(s => s.AccountNo == Convert.ToInt16(accountNumInput)).AccountHolder, myBank.Accounts.Find(s => s.AccountNo == Convert.ToInt16(accountNumInput)).AccountType, myBank.Balance(Convert.ToInt16(accountNumInput)));
+                            foreach (Account item in myBank.Accounts)
+                            {
+                                Console.WriteLine("{0} - {1} - {2} - {3}",item.AccountNo, item.AccountHolder, item.AccountType, item.AccountBalance);
+                            }
                         }
-                        catch (Exception ex)
+                        else
                         {
-                            Console.WriteLine("Der er desværre sket en fejl");
-                            Console.WriteLine(ex.Message);
-                            Console.WriteLine("Prøv venligst igen.");
+                            try
+                            {
+                                Console.WriteLine("Saldoen på {0} ({1}) er: {2}", myBank.Accounts.Find(s => s.AccountNo == Convert.ToInt16(accountNumInput)).AccountHolder, myBank.Accounts.Find(s => s.AccountNo == Convert.ToInt16(accountNumInput)).AccountType, myBank.Balance(Convert.ToInt16(accountNumInput)));
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("Der er desværre sket en fejl");
+                                Console.WriteLine(ex.Message);
+                                Console.WriteLine("Prøv venligst igen.");
+                            }
                         }
                         Console.WriteLine("Tast enter for at fortsætte");
                         Console.ReadKey(true);
