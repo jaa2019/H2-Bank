@@ -14,7 +14,9 @@ namespace H2_Bank
         static void Main(string[] args)
         {
             string accountNumInput;
-            string decimalInput;
+            string decimalStrInput;
+            decimal decimalDecInput;
+            bool menuBool = false;
             ConsoleKeyInfo menuKey;
 
 
@@ -51,10 +53,10 @@ namespace H2_Bank
                         Console.Write("Indtast kontonummer: ");
                         accountNumInput = Console.ReadLine();
                         Console.Write("Indtast beløb: ");
-                        decimalInput = Console.ReadLine();
+                        decimalStrInput = Console.ReadLine();
                         try
                         {
-                            myBank.Deposit(Convert.ToDecimal(decimalInput), myBank.Accounts.Find(s => s.AccountNo == Convert.ToInt16(accountNumInput)).AccountNo);
+                            myBank.Deposit(Convert.ToDecimal(decimalStrInput), myBank.Accounts.Find(s => s.AccountNo == Convert.ToInt16(accountNumInput)).AccountNo);
                         }
                         catch (Exception ex)
                         {
@@ -62,32 +64,85 @@ namespace H2_Bank
                             Console.WriteLine(ex.Message);
                             Console.WriteLine("Prøv venligst igen.");
                         }
-                        Console.WriteLine("Du har indsat {0}, saldoen er nu {1} - Tast enter for at fortsætte", decimalInput, myBank.Balance(Convert.ToInt16(accountNumInput)));
+                        Console.WriteLine("Du har indsat {0}, saldoen er nu {1} - Tast enter for at fortsætte", decimalStrInput, myBank.Balance(Convert.ToInt16(accountNumInput)));
                         Console.ReadKey(true);
                         break;
-                    case ConsoleKey.H:
-                        Console.WriteLine();
-                        Console.WriteLine("Vælg hvilken konto du vil hæve fra:");
-                        foreach (Account item in myBank.Accounts)
+                        case ConsoleKey.H:
+                        do
                         {
-                            Console.WriteLine("[{0}] - {1} - {2}", item.AccountNo, item.AccountType, item.AccountHolder);
-                        }
-                        Console.Write("Indtast kontonummer: ");
-                        accountNumInput = Console.ReadLine();
-                        Console.Write("Indtast beløb: ");
-                        decimalInput = Console.ReadLine();
-                        try
-                        {
-                            myBank.Withdraw(Convert.ToDecimal(decimalInput), myBank.Accounts.Find(s => s.AccountNo == Convert.ToInt16(accountNumInput)).AccountNo);
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine("Der er desværre sket en fejl");
-                            Console.WriteLine(ex.Message);
-                            Console.WriteLine("Prøv venligst igen.");
-                        }
-                        Console.WriteLine("Du har hævet -{0}, saldoen er nu {1} - Tast enter for at fortsætte", decimalInput, myBank.Balance(Convert.ToInt16(accountNumInput)));
-                        Console.ReadKey(true);
+                            Console.WriteLine();
+                            Console.WriteLine("Vælg hvilken konto du vil hæve fra:");
+                            foreach (Account item in myBank.Accounts)
+                            {
+                                Console.WriteLine("[{0}] - {1} - {2}", item.AccountNo, item.AccountType, item.AccountHolder);
+                            }
+                            Console.Write("Indtast kontonummer: ");
+                            accountNumInput = Console.ReadLine();
+                            Console.Write("Indtast beløb: ");
+                            decimalStrInput = Console.ReadLine();
+                            try
+                            {
+                                decimalDecInput = Convert.ToDecimal(decimalStrInput);
+                                try
+                                {
+                                    if (myBank.Withdraw(Convert.ToDecimal(decimalDecInput), myBank.Accounts.Find(s => s.AccountNo == Convert.ToInt16(accountNumInput)).AccountNo) == true)
+                                    {
+                                        Console.WriteLine("Du har hævet -{0}, saldoen er nu {1} - Tast enter for at fortsætte", decimalStrInput, myBank.Balance(Convert.ToInt16(accountNumInput)));
+                                        Console.ReadKey(true);
+                                        menuBool = true;
+                                    }
+                                    else if (myBank.Withdraw(Convert.ToDecimal(decimalDecInput), myBank.Accounts.Find(s => s.AccountNo == Convert.ToInt16(accountNumInput)).AccountNo) == false)
+                                    {
+                                        Console.WriteLine("Du har desværre ikke nok kredit på kontoen.");
+                                        Console.WriteLine("Prøv igen, eller tast X for at afbryde");
+                                        ConsoleKeyInfo exit = Console.ReadKey(true);
+                                        if (exit.Key == ConsoleKey.X)
+                                        {
+                                            break;
+                                        }
+                                        menuBool = false;
+                                    }
+                                }
+                                catch (NullReferenceException)
+                                {
+                                    Console.WriteLine("Der er desværre sket en fejl");
+                                    Console.WriteLine("Den konto du prøver at hæve fra findes ikke.");
+                                    Console.WriteLine("Kontroller kontonummer, og prøv igen (tast X for at afbryde)");
+                                    ConsoleKeyInfo exit = Console.ReadKey(true);
+                                    if (exit.Key == ConsoleKey.X)
+                                    {
+                                        break;
+                                    }
+                                    menuBool = false;
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine("Der er desværre sket en fejl");
+                                    Console.WriteLine(ex.Message);
+                                    Console.WriteLine("Prøv venligst igen (tast X for at afbryde)");
+                                    ConsoleKeyInfo exit = Console.ReadKey(true);
+                                    if (exit.Key == ConsoleKey.X)
+                                    {
+                                        break;
+                                    }
+                                    menuBool = false;
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("Der er desværre sket en fejl");
+                                Console.WriteLine(ex.Message);
+                                Console.WriteLine("Prøv venligst igen (tast X for at afbryde)");
+                                ConsoleKeyInfo exit = Console.ReadKey(true);
+                                if (exit.Key == ConsoleKey.X)
+                                {
+                                    break;
+                                }
+                                menuBool = false;
+                                decimalDecInput = 0;
+                            }
+                        } while (!menuBool);
+                        menuBool = false;
                         break;
                     case ConsoleKey.V:
                         Console.WriteLine();
@@ -170,7 +225,6 @@ namespace H2_Bank
             Console.WriteLine("║       [V]is saldo         ║");
             Console.WriteLine("║       [X] Afslut          ║");
             Console.WriteLine("╚═══════════════════════════╝");
-
         }
     }
 }

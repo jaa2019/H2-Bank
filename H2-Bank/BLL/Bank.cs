@@ -60,41 +60,46 @@ namespace H2_Bank.BLL
         }
 
         /// <summary>
-        /// Hæver penge på kontoen
+        /// Hæver penge på kontoen og kontrollerer om der er kredit nok
         /// </summary>
         /// <param name="amount">Værdi</param>
         /// <param name="accountno">Kontunummer</param>
-        public void Withdraw(decimal amount, int accountno)
+        public bool Withdraw(decimal amount, int accountno)
         {
             Account searchAcc = Accounts.Find(x => x.AccountNo == accountno);
-            Console.WriteLine(searchAcc.AccountType);
+
             if (searchAcc.AccountType == "Lønkonto")
             {
-                if (searchAcc.AccountBalance > amount)
+                if (searchAcc.AccountBalance >= (-5000 + amount))
                 {
                     searchAcc.AccountBalance -= amount;
+                    return true;
                 }
-                else Console.WriteLine("AFVIST! LK");
+                else return false;
             }
             else if (searchAcc.AccountType == "Opsparingskonto")
             {
-                if (searchAcc.AccountBalance > amount)
+                if (searchAcc.AccountBalance >= amount)
                 {
                     searchAcc.AccountBalance -= amount;
-                    Console.WriteLine("Du nærmer dig overtræk makker");
+                    return true;
                 }
-                else Console.WriteLine("AFVIST! OK");
+                else return false;
             }
             else if (searchAcc.AccountType == "Kreditkortkonto")
             {
-                if (searchAcc.AccountBalance > (-20000 + amount))
+                if (searchAcc.AccountBalance >= (-20000 + amount))
                 {
                     searchAcc.AccountBalance -= amount;
-                    Console.WriteLine("Uh oh!");
+                    return true;
                 }
-                else Console.WriteLine("AFVIST! KK");
+                else return false;
             }
-            else Console.WriteLine("Der må være sket en fjel");
+            else
+            {
+                Console.WriteLine("Der må være sket en fjel");
+                return false;
+            }
         }
 
         /// <summary>
