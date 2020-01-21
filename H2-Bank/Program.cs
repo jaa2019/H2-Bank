@@ -32,9 +32,9 @@ namespace H2_Bank
                         Console.WriteLine("[3] - Opsparingskonto");
                         Console.Write("Indtast kontotype: ");
                         int accTypeInput = Convert.ToInt16(Console.ReadLine());
-                        myBank.CreateAccount(accNameInput, accTypeInput);
+                        string accTypeOut = myBank.CreateAccount(accNameInput, accTypeInput);
                         Console.WriteLine();
-                        Console.Write("Du har oprettet en {0} i {1}'s navn, den fik kontonummer {2}. Tast enter for at fortsætte", myBank.Accounts.Find(s => s.AccountHolder == accNameInput).AccountType, accNameInput, myBank.Accounts.Find(s => s.AccountHolder == accNameInput).AccountNo);
+                        Console.Write("Du har oprettet en {0} i {1}'s navn, den fik kontonummer {2}. Tast enter for at fortsætte", accTypeOut , accNameInput, myBank.AccountNo);
                         Console.ReadKey(true);
                         break;
                     case ConsoleKey.I:
@@ -63,7 +63,7 @@ namespace H2_Bank
                         break;
                     case ConsoleKey.H:
                         Console.WriteLine();
-                        Console.Write("Vælg hvilken konto du vil hæve fra:");
+                        Console.WriteLine("Vælg hvilken konto du vil hæve fra:");
                         foreach (Account item in myBank.Accounts)
                         {
                             Console.WriteLine(item.AccountNo + " " + item.AccountHolder);

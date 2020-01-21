@@ -24,21 +24,25 @@ namespace H2_Bank
         /// </summary>
         /// <param name="navn">Navn på kontoholder</param>
         /// <param name="type">Type af konto</param>
-        public void CreateAccount(string navn, int type)
+        public string CreateAccount(string navn, int type)
         {
             ++AccountNo;
             if (type == 1)
             {
                 Accounts.Add(new CheckingAccount(navn, AccountNo));
+                return "Lønkonto";
             }
             else if (type == 2)
             {
                 Accounts.Add(new MasterCardAccount(navn, AccountNo));
+                return "Kreditkortkonto";
             }
             else if (type == 3)
             {
                 Accounts.Add(new SavingsAccount(navn, AccountNo));
+                return "Opsparingskonto";
             }
+            return null;
         }
 
         /// <summary>
