@@ -23,7 +23,7 @@ namespace H2_Bank.Models
             }
             else
             {
-                AccountBalance = AccountBalance / 0.98m;
+                AccountBalance = AccountBalance / 0.8m;
             }
         }
     }

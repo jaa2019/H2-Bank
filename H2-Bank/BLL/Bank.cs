@@ -67,7 +67,34 @@ namespace H2_Bank.BLL
         public void Withdraw(decimal amount, int accountno)
         {
             Account searchAcc = Accounts.Find(x => x.AccountNo == accountno);
-            searchAcc.AccountBalance -= amount;
+            Console.WriteLine(searchAcc.AccountType);
+            if (searchAcc.AccountType == "Lønkonto")
+            {
+                if (searchAcc.AccountBalance > amount)
+                {
+                    searchAcc.AccountBalance -= amount;
+                }
+                else Console.WriteLine("AFVIST! LK");
+            }
+            else if (searchAcc.AccountType == "Opsparingskonto")
+            {
+                if (searchAcc.AccountBalance > amount)
+                {
+                    searchAcc.AccountBalance -= amount;
+                    Console.WriteLine("Du nærmer dig overtræk makker");
+                }
+                else Console.WriteLine("AFVIST! OK");
+            }
+            else if (searchAcc.AccountType == "Kreditkortkonto")
+            {
+                if (searchAcc.AccountBalance > (-20000 + amount))
+                {
+                    searchAcc.AccountBalance -= amount;
+                    Console.WriteLine("Uh oh!");
+                }
+                else Console.WriteLine("AFVIST! KK");
+            }
+            else Console.WriteLine("Der må være sket en fjel");
         }
 
         /// <summary>
