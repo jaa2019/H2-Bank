@@ -1,5 +1,5 @@
 ﻿using System;
-namespace H2_Bank
+namespace H2_Bank.Models
 {
     public class MasterCardAccount : Account
     {

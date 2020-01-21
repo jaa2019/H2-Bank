@@ -1,5 +1,6 @@
 ﻿using System;
-namespace H2_Bank
+namespace H2_Bank.Models
+
 {
     public abstract class Account
     {
@@ -7,7 +8,6 @@ namespace H2_Bank
         public string AccountType { get; set; }
         public decimal AccountBalance { get; set; }
         public int AccountNo { get; set; }
-
 
         public abstract void ChargeInterest();
     }

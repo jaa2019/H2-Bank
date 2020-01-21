@@ -6,4 +6,9 @@
     <RootNamespace>H2_Bank</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <Folder Include="BLL\" />
+    <Folder Include="Repository\" />
+  </ItemGroup>
 </Project>

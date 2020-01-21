@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using H2_Bank.Models;
+using H2_Bank.Repository;
 
-namespace H2_Bank
+namespace H2_Bank.BLL
 {
-    public class Bank
+    public class Bank : iBank
     {
         public string BankName { get; }
         public List<Account> Accounts { get; set; }
@@ -24,20 +26,20 @@ namespace H2_Bank
         /// </summary>
         /// <param name="navn">Navn på kontoholder</param>
         /// <param name="type">Type af konto</param>
-        public string CreateAccount(string navn, int type)
+        public string CreateAccount(string navn, AccountType type)
         {
             ++AccountNo;
-            if (type == 1)
+            if (type == AccountType.checkingAccount)
             {
                 Accounts.Add(new CheckingAccount(navn, AccountNo));
                 return "Lønkonto";
             }
-            else if (type == 2)
+            else if (type == AccountType.masterCardAccount)
             {
                 Accounts.Add(new MasterCardAccount(navn, AccountNo));
                 return "Kreditkortkonto";
             }
-            else if (type == 3)
+            else if (type == AccountType.savingsAccount)
             {
                 Accounts.Add(new SavingsAccount(navn, AccountNo));
                 return "Opsparingskonto";
@@ -87,7 +89,6 @@ namespace H2_Bank
             foreach (Account item in Accounts)
             {
                 item.ChargeInterest();
-                //TODO Rente skrives forkert.
             }
         }
     }

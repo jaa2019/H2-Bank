@@ -1,6 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
+using System.ComponentModel;
+using System.Reflection;
+using System.Linq;
+using H2_Bank.Models;
+using H2_Bank.BLL;
+using H2_Bank.Repository;
 
 namespace H2_Bank
 {
@@ -20,19 +25,18 @@ namespace H2_Bank
                 menuKey = Console.ReadKey(true);
                 switch (menuKey.Key)
                 {
-                    case ConsoleKey.M:
-                        Menu();
-                        break;
                     case ConsoleKey.O:
                         Console.WriteLine();
                         Console.Write("Indtast navn på kontohaver: ");
                         string accNameInput = Console.ReadLine();
-                        Console.WriteLine("[1] - Lønkonto");
-                        Console.WriteLine("[2] - Kreditkortkonto");
-                        Console.WriteLine("[3] - Opsparingskonto");
+                        foreach (int item in Enum.GetValues(typeof(AccountType)))
+                        {
+                            Console.WriteLine("["+item+"]" + " " + Enum.GetName(typeof(AccountType), item));
+                        }
                         Console.Write("Indtast kontotype: ");
-                        int accTypeInput = Convert.ToInt16(Console.ReadLine());
-                        string accTypeOut = myBank.CreateAccount(accNameInput, accTypeInput);
+                        string accTypeInput = Console.ReadLine();
+                        AccountType accType = (AccountType)Enum.Parse(typeof(AccountType), accTypeInput);
+                        string accTypeOut = myBank.CreateAccount(accNameInput, accType);
                         Console.WriteLine();
                         Console.Write("Du har oprettet en {0} i {1}'s navn, den fik kontonummer {2}. Tast enter for at fortsætte", accTypeOut , accNameInput, myBank.AccountNo);
                         Console.ReadKey(true);
@@ -42,7 +46,7 @@ namespace H2_Bank
                         Console.WriteLine("Vælg hvilken konto du vil indsætte penge på: ");
                         foreach (Account item in myBank.Accounts)
                         {
-                            Console.WriteLine("{0} - {1} - {2}",item.AccountNo,item.AccountType,item.AccountHolder);
+                            Console.WriteLine("[{0}] - {1} - {2}",item.AccountNo,item.AccountType,item.AccountHolder);
                         }
                         Console.Write("Indtast kontonummer: ");
                         accountNumInput = Console.ReadLine();
@@ -66,7 +70,7 @@ namespace H2_Bank
                         Console.WriteLine("Vælg hvilken konto du vil hæve fra:");
                         foreach (Account item in myBank.Accounts)
                         {
-                            Console.WriteLine("{0} - {1} - {2}", item.AccountNo, item.AccountType, item.AccountHolder);
+                            Console.WriteLine("[{0}] - {1} - {2}", item.AccountNo, item.AccountType, item.AccountHolder);
                         }
                         Console.Write("Indtast kontonummer: ");
                         accountNumInput = Console.ReadLine();
@@ -91,7 +95,7 @@ namespace H2_Bank
                         Console.WriteLine("[A]lle konti");
                         foreach (Account item in myBank.Accounts)
                         {
-                            Console.WriteLine(item.AccountNo + " " + item.AccountHolder);
+                            Console.WriteLine("[{0}] - {1}", item.AccountNo, item.AccountHolder);
                         }
                         Console.Write("Indtast kontonummer: ");
                         accountNumInput = Console.ReadLine();
@@ -159,7 +163,6 @@ namespace H2_Bank
             Console.WriteLine("║ Velkommen til Jan's Bank! ║");
             Console.WriteLine("╠═══════════════════════════╣");
             Console.WriteLine("║       Vælg venligst:      ║");
-            Console.WriteLine("║       [M]enu              ║");
             Console.WriteLine("║       [O]pret konto       ║");
             Console.WriteLine("║       [R]ente på konto    ║");
             Console.WriteLine("║       [I]ndsæt beløb      ║");
