@@ -2,14 +2,30 @@
 using System.Collections.Generic;
 using H2_Bank.Models;
 using H2_Bank.Repository;
+using H2_Bank.Utilities;
+using H2_Bank;
 
 namespace H2_Bank.BLL
 {
+    delegate void LogHandlerDelegate(string msg);
+
     public class Bank : iBank
     {
         public string BankName { get; }
         public List<Account> Accounts { get; set; }
         public int AccountNo { get; set; }
+
+        public List<AccountListItem> GetAccountList()
+        {
+            List<AccountListItem> GUIList = new List<AccountListItem>();
+            foreach (Account item in Accounts)
+            {
+                GUIList.Add(new AccountListItem(item));
+            }
+            return GUIList;
+        }
+
+        LogHandlerDelegate LoghandlerEvent = Bank_LoghandlerEvent;
 
         /// <summary>
         /// Instancierer banken
@@ -34,16 +50,19 @@ namespace H2_Bank.BLL
             if (type == AccountType.checkingAccount)
             {
                 Accounts.Add(new CheckingAccount(navn, AccountNo));
+                LoghandlerEvent("Der er oprettet en " + type.ToString() + " til " + navn);
                 return "Lønkonto";
             }
             else if (type == AccountType.masterCardAccount)
             {
                 Accounts.Add(new MasterCardAccount(navn, AccountNo));
+                LoghandlerEvent("Der er oprettet en " + type.ToString() + " til " + navn);
                 return "Kreditkortkonto";
             }
             else if (type == AccountType.savingsAccount)
             {
                 Accounts.Add(new SavingsAccount(navn, AccountNo));
+                LoghandlerEvent("Der er oprettet en " + type.ToString() + " til " + navn);
                 return "Opsparingskonto";
             }
             return null;
@@ -58,6 +77,7 @@ namespace H2_Bank.BLL
         {
             Account searchAcc = Accounts.Find(x => x.AccountNo == accountno);
             searchAcc.AccountBalance += amount;
+            LoghandlerEvent("SUCCESS! " + "+" + amount + " - " + searchAcc.AccountHolder + " - " + searchAcc.AccountType + " - " + searchAcc.AccountNo + " = " + searchAcc.AccountBalance);
 
         }
 
@@ -77,27 +97,42 @@ namespace H2_Bank.BLL
                 if (searchAcc.AccountBalance >= (searchAcc.AccountLimit + amount))
                 {
                     searchAcc.AccountBalance -= amount;
+                    LoghandlerEvent("SUCCESS! " + "-" + amount + " - " + searchAcc.AccountHolder + " - " + searchAcc.AccountType + " - " + searchAcc.AccountNo + " = " + searchAcc.AccountBalance);
                     return true;
                 }
-                else throw new OverdraftException();
+                else
+                {
+                    LoghandlerEvent("ERROR! " + "-" + amount + " - " + searchAcc.AccountHolder + " - " + searchAcc.AccountType + " - " + searchAcc.AccountNo + " = " + searchAcc.AccountBalance);
+                    throw new OverdraftException();
+                }
             }
             else if (searchAcc.AccountType == "Opsparingskonto")
             {
                 if (searchAcc.AccountBalance >= (searchAcc.AccountLimit + amount))
                 {
                     searchAcc.AccountBalance -= amount;
+                    LoghandlerEvent("SUCCESS! " + "-" + amount + " - " + searchAcc.AccountHolder + " - " + searchAcc.AccountType + " - " + searchAcc.AccountNo + " = " + searchAcc.AccountBalance);
                     return true;
                 }
-                else throw new OverdraftException();
+                else
+                {
+                    LoghandlerEvent("ERROR! " + "-" + amount + " - " + searchAcc.AccountHolder + " - " + searchAcc.AccountType + " - " + searchAcc.AccountNo + " = " + searchAcc.AccountBalance);
+                    throw new OverdraftException();
+                }
             }
             else if (searchAcc.AccountType == "Kreditkortkonto")
             {
                 if (searchAcc.AccountBalance >= (searchAcc.AccountLimit + amount))
                 {
                     searchAcc.AccountBalance -= amount;
+                    LoghandlerEvent("SUCCESS! " + "-" + amount + " - " + searchAcc.AccountHolder + " - " + searchAcc.AccountType + " - " + searchAcc.AccountNo + " = " + searchAcc.AccountBalance);
                     return true;
                 }
-                else throw new OverdraftException();
+                else
+                {
+                    LoghandlerEvent("ERROR! " + "-" + amount + " - " + searchAcc.AccountHolder + " - " + searchAcc.AccountType + " - " + searchAcc.AccountNo + " = " + searchAcc.AccountBalance);
+                    throw new OverdraftException();
+                }
             }
             else
             {
@@ -114,6 +149,7 @@ namespace H2_Bank.BLL
         public decimal Balance(int accountno)
         {
             Account searchAcc = Accounts.Find(x => x.AccountNo == accountno);
+            LoghandlerEvent("Balance check: " + searchAcc.AccountHolder + " " + searchAcc.AccountNo + " " + searchAcc.AccountType + " " + searchAcc.AccountBalance);
             return searchAcc.AccountBalance;
         }
 
@@ -122,10 +158,14 @@ namespace H2_Bank.BLL
         /// </summary>
         public void Interest()
         {
+            LoghandlerEvent("Adding interest...");
             foreach (Account item in Accounts)
             {
+                LoghandlerEvent("Before: " + item.AccountNo + " - " + item.AccountType + " - " + item.AccountBalance);
                 item.ChargeInterest();
+                LoghandlerEvent("After: " + item.AccountNo + " - " + item.AccountType + " - " + item.AccountBalance);
             }
+            LoghandlerEvent("Job completed ...");
         }
 
         /// <summary>
@@ -142,5 +182,14 @@ namespace H2_Bank.BLL
             }
             return false;
         }
-    }
+
+        /// <summary>
+        /// Eventlog til at smide ændringer i programmet ind i logfilen
+        /// </summary>
+        /// <param name="msg">Besked fra eventet</param>
+        static void Bank_LoghandlerEvent(string msg)
+        {
+            FileLogger.WriteToLog(msg);
+        }
+   }
 }

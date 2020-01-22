@@ -9,22 +9,23 @@ namespace H2_Bank.Utilities
 
         public static void WriteToLog(string logmessage)
         {
-            string writeMsg = logmessage + "\n";
+            string writeMsg = DateTime.Now.ToString() + " " + logmessage + "\n";
             File.AppendAllText(fileName, writeMsg);
         }
 
         public static string ReadFromLog()
         {
+            string foundFile = null;
             DirectoryInfo findLog = new DirectoryInfo(Environment.CurrentDirectory);
             foreach (FileInfo filer in findLog.GetFiles())
             {
                 if (filer.Extension == ".bnk")
                 {
-                    string foundFile = File.ReadAllText(filer.FullName);
+                    foundFile = File.ReadAllText(filer.FullName);
+                    return foundFile;
                 }
             }
-            return null;
+            return "Der er ikke fundet nogen log.";
         }
-
     }
 }

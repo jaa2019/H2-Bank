@@ -113,7 +113,7 @@ namespace H2_Bank
                                     Console.WriteLine("Der er desværre sket en fejl");
                                     Console.WriteLine("Den konto du prøver at hæve fra findes ikke.");
                                     Console.WriteLine("Kontroller kontonummer, og prøv igen (tast X for at afbryde)");
-                                    if (Console.ReadKey(true).Key == ConsoleKey.X)
+                                    if (myBank.ExitError(Console.ReadKey(true)))
                                     {
                                         break;
                                     }
@@ -134,8 +134,7 @@ namespace H2_Bank
                                 Console.WriteLine("Der er desværre sket en fejl");
                                 Console.WriteLine(ex.Message);
                                 Console.WriteLine("Prøv venligst igen (tast X for at afbryde)");
-                                ConsoleKeyInfo exit = Console.ReadKey(true);
-                                if (exit.Key == ConsoleKey.X)
+                                if (myBank.ExitError(Console.ReadKey(true)))
                                 {
                                     break;
                                 }
@@ -203,7 +202,10 @@ namespace H2_Bank
                     #endregion
                     #region - Viser logfilen
                     case ConsoleKey.L:
+                        Console.WriteLine("Loggen indeholder følgende:");
                         Console.WriteLine(FileLogger.ReadFromLog());
+                        Console.Write("Tast en vilkårlig tast for at fortsætte");
+                        Console.ReadKey(true);
                         break;
                     #endregion
                     default:
@@ -245,3 +247,4 @@ namespace H2_Bank
 }
 
 //TODO - Eventuelt tilføje en do/while på alle menupunkter ved fejl, så brugeren kan prøve igen uden at blive smidt retur til hovedmenuen
+//TODO - Balancecheck fixerupper

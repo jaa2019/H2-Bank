@@ -10,5 +10,6 @@ namespace H2_Bank.Repository
         public string BankName { get; }
         public List<Account> Accounts { get; set; }
         public int AccountNo { get; set; }
+        public List<AccountListItem> GetAccountList();
     }
 }
