@@ -26,8 +26,10 @@ namespace H2_Bank.BLL
         /// </summary>
         /// <param name="navn">Navn på kontoholder</param>
         /// <param name="type">Type af konto</param>
+        /// <returns>Friendly-name på kontoen</returns>
         public string CreateAccount(string navn, AccountType type)
         {
+            //Forhøjet kontonummer med én
             ++AccountNo;
             if (type == AccountType.checkingAccount)
             {
@@ -64,36 +66,38 @@ namespace H2_Bank.BLL
         /// </summary>
         /// <param name="amount">Værdi</param>
         /// <param name="accountno">Kontunummer</param>
+        /// <returns>Returnerer en bolsk værdi til kontrol af om transaktionen bliver gennemført</returns>
+        /// Kaser en exception hvis der ikke er nok dækning på kontoen.
         public bool Withdraw(decimal amount, int accountno)
         {
             Account searchAcc = Accounts.Find(x => x.AccountNo == accountno);
 
             if (searchAcc.AccountType == "Lønkonto")
             {
-                if (searchAcc.AccountBalance >= (-5000 + amount))
+                if (searchAcc.AccountBalance >= (searchAcc.AccountLimit + amount))
                 {
                     searchAcc.AccountBalance -= amount;
                     return true;
                 }
-                else return false;
+                else throw new OverdraftException();
             }
             else if (searchAcc.AccountType == "Opsparingskonto")
             {
-                if (searchAcc.AccountBalance >= amount)
+                if (searchAcc.AccountBalance >= (searchAcc.AccountLimit + amount))
                 {
                     searchAcc.AccountBalance -= amount;
                     return true;
                 }
-                else return false;
+                else throw new OverdraftException();
             }
             else if (searchAcc.AccountType == "Kreditkortkonto")
             {
-                if (searchAcc.AccountBalance >= (-20000 + amount))
+                if (searchAcc.AccountBalance >= (searchAcc.AccountLimit + amount))
                 {
                     searchAcc.AccountBalance -= amount;
                     return true;
                 }
-                else return false;
+                else throw new OverdraftException();
             }
             else
             {

@@ -13,10 +13,10 @@ namespace H2_Bank
     {
         static void Main(string[] args)
         {
-            string accountNumInput;
-            string decimalStrInput;
-            decimal decimalDecInput;
-            bool menuBool = false;
+            string accountNumInput;                                             //Det input brugeren giver når denne vælger en konto
+            string decimalStrInput;                                             //Det input brugeren giver når denne vil indsætte eller hæve
+            decimal decimalDecInput;                                            //Konverteret fra string til decimal (try/catch)
+            bool menuBool = false;                                              //En bolsk værdi der bliver sat ved try/catch hvis brugeren vælger at prøve igen
             ConsoleKeyInfo menuKey;
 
 
@@ -27,10 +27,12 @@ namespace H2_Bank
                 menuKey = Console.ReadKey(true);
                 switch (menuKey.Key)
                 {
+                    #region - Opret konto
                     case ConsoleKey.O:
                         Console.WriteLine();
                         Console.Write("Indtast navn på kontohaver: ");
                         string accNameInput = Console.ReadLine();
+                        //Løber alle de tilgængelige konti typer igennem, og viser dem som en "menu"
                         foreach (int item in Enum.GetValues(typeof(AccountType)))
                         {
                             Console.WriteLine("["+item+"]" + " " + Enum.GetName(typeof(AccountType), item));
@@ -38,14 +40,18 @@ namespace H2_Bank
                         Console.Write("Indtast kontotype: ");
                         string accTypeInput = Console.ReadLine();
                         AccountType accType = (AccountType)Enum.Parse(typeof(AccountType), accTypeInput);
+                        //Opretter given konto, og får en string retur med friendly name
                         string accTypeOut = myBank.CreateAccount(accNameInput, accType);
                         Console.WriteLine();
                         Console.Write("Du har oprettet en {0} i {1}'s navn, den fik kontonummer {2}. Tast enter for at fortsætte", accTypeOut , accNameInput, myBank.AccountNo);
                         Console.ReadKey(true);
                         break;
+                    #endregion
+                    #region - Indsæt penge
                     case ConsoleKey.I:
                         Console.WriteLine();
                         Console.WriteLine("Vælg hvilken konto du vil indsætte penge på: ");
+                        //Løber alle konti igennem og viser det som en menu brugeren kan vælge
                         foreach (Account item in myBank.Accounts)
                         {
                             Console.WriteLine("[{0}] - {1} - {2}",item.AccountNo,item.AccountType,item.AccountHolder);
@@ -54,6 +60,7 @@ namespace H2_Bank
                         accountNumInput = Console.ReadLine();
                         Console.Write("Indtast beløb: ");
                         decimalStrInput = Console.ReadLine();
+                        //Prøver at konvertere og indsætte brugerens input
                         try
                         {
                             myBank.Deposit(Convert.ToDecimal(decimalStrInput), myBank.Accounts.Find(s => s.AccountNo == Convert.ToInt16(accountNumInput)).AccountNo);
@@ -67,11 +74,16 @@ namespace H2_Bank
                         Console.WriteLine("Du har indsat {0}, saldoen er nu {1} - Tast enter for at fortsætte", decimalStrInput, myBank.Balance(Convert.ToInt16(accountNumInput)));
                         Console.ReadKey(true);
                         break;
-                        case ConsoleKey.H:
+                    #endregion
+                    #region - Hæver penge
+                    case ConsoleKey.H:
+                        //Denne do/while kigger på menuBool som bliver sat TRUE hvis alt blev gennemført.
+                        //Hvis brugeren har lavet en fejl bliver den sat FALSE så brugeren kan prøve igen
                         do
                         {
                             Console.WriteLine();
                             Console.WriteLine("Vælg hvilken konto du vil hæve fra:");
+                            //Løber alle konti igennem og viser dem som en menu hvor man kan vælge hvilken konto man vil hæve fra
                             foreach (Account item in myBank.Accounts)
                             {
                                 Console.WriteLine("[{0}] - {1} - {2}", item.AccountNo, item.AccountType, item.AccountHolder);
@@ -80,27 +92,19 @@ namespace H2_Bank
                             accountNumInput = Console.ReadLine();
                             Console.Write("Indtast beløb: ");
                             decimalStrInput = Console.ReadLine();
+                            //Try/catch delen hvor input bliver kontrolleret (tal værdi)
                             try
                             {
                                 decimalDecInput = Convert.ToDecimal(decimalStrInput);
+                                //Tester for at se om der er kredit nok på kontoen (og om kontoen eksiterer)
                                 try
                                 {
-                                    if (myBank.Withdraw(Convert.ToDecimal(decimalDecInput), myBank.Accounts.Find(s => s.AccountNo == Convert.ToInt16(accountNumInput)).AccountNo) == true)
+                                    //TRUE bliver returneret af withdraw() om transaktionen blev gennemført
+                                    if (myBank.Withdraw(decimalDecInput, myBank.Accounts.Find(s => s.AccountNo == Convert.ToInt16(accountNumInput)).AccountNo) == true)
                                     {
                                         Console.WriteLine("Du har hævet -{0}, saldoen er nu {1} - Tast enter for at fortsætte", decimalStrInput, myBank.Balance(Convert.ToInt16(accountNumInput)));
                                         Console.ReadKey(true);
                                         menuBool = true;
-                                    }
-                                    else if (myBank.Withdraw(Convert.ToDecimal(decimalDecInput), myBank.Accounts.Find(s => s.AccountNo == Convert.ToInt16(accountNumInput)).AccountNo) == false)
-                                    {
-                                        Console.WriteLine("Du har desværre ikke nok kredit på kontoen.");
-                                        Console.WriteLine("Prøv igen, eller tast X for at afbryde");
-                                        ConsoleKeyInfo exit = Console.ReadKey(true);
-                                        if (exit.Key == ConsoleKey.X)
-                                        {
-                                            break;
-                                        }
-                                        menuBool = false;
                                     }
                                 }
                                 catch (NullReferenceException)
@@ -108,18 +112,6 @@ namespace H2_Bank
                                     Console.WriteLine("Der er desværre sket en fejl");
                                     Console.WriteLine("Den konto du prøver at hæve fra findes ikke.");
                                     Console.WriteLine("Kontroller kontonummer, og prøv igen (tast X for at afbryde)");
-                                    ConsoleKeyInfo exit = Console.ReadKey(true);
-                                    if (exit.Key == ConsoleKey.X)
-                                    {
-                                        break;
-                                    }
-                                    menuBool = false;
-                                }
-                                catch (Exception ex)
-                                {
-                                    Console.WriteLine("Der er desværre sket en fejl");
-                                    Console.WriteLine(ex.Message);
-                                    Console.WriteLine("Prøv venligst igen (tast X for at afbryde)");
                                     ConsoleKeyInfo exit = Console.ReadKey(true);
                                     if (exit.Key == ConsoleKey.X)
                                     {
@@ -144,16 +136,20 @@ namespace H2_Bank
                         } while (!menuBool);
                         menuBool = false;
                         break;
+                    #endregion
+                    #region - Vis saldo
                     case ConsoleKey.V:
                         Console.WriteLine();
                         Console.WriteLine("Vælg hvilken konto du vil se saldo for:");
                         Console.WriteLine("[A]lle konti");
+                        //Løber alle konti igennem
                         foreach (Account item in myBank.Accounts)
                         {
                             Console.WriteLine("[{0}] - {1}", item.AccountNo, item.AccountHolder);
                         }
                         Console.Write("Indtast kontonummer: ");
                         accountNumInput = Console.ReadLine();
+                        //Hvis brugeren taster A, bliver saldi vist for alle konti.
                         if (accountNumInput == "A" | accountNumInput == "a")
                         {
                             foreach (Account item in myBank.Accounts)
@@ -165,7 +161,9 @@ namespace H2_Bank
                         {
                             try
                             {
-                                Console.WriteLine("Saldoen på {0} ({1}) er: {2}", myBank.Accounts.Find(s => s.AccountNo == Convert.ToInt16(accountNumInput)).AccountHolder, myBank.Accounts.Find(s => s.AccountNo == Convert.ToInt16(accountNumInput)).AccountType, myBank.Balance(Convert.ToInt16(accountNumInput)));
+                                //Finder den konto brugeren søgte på
+                                Account searchAcc = myBank.Accounts.Find(s => s.AccountNo == Convert.ToInt16(accountNumInput));
+                                Console.WriteLine("Saldoen på {0} ({1}) er: {2}", searchAcc.AccountHolder, searchAcc.AccountType, searchAcc.AccountBalance);
                             }
                             catch (Exception ex)
                             {
@@ -177,6 +175,8 @@ namespace H2_Bank
                         Console.WriteLine("Tast enter for at fortsætte");
                         Console.ReadKey(true);
                         break;
+                    #endregion
+                    #region - Tilskrive rente
                     case ConsoleKey.R:
                         Console.WriteLine();
                         myBank.Interest();
@@ -191,11 +191,11 @@ namespace H2_Bank
                         Console.WriteLine("Tast enter for at fortsætte");
                         Console.ReadKey();
                         break;
+                    #endregion
                     default:
                         break;
                 }
             } while (menuKey.Key != ConsoleKey.X);
-
         }
 
         static void Menu()
@@ -228,3 +228,5 @@ namespace H2_Bank
         }
     }
 }
+
+//TODO - Eventuelt tilføje en do/while på alle menupunkter ved fejl, så brugeren kan prøve igen uden at blive smidt retur til hovedmenuen

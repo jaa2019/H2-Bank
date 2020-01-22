@@ -3,9 +3,7 @@ namespace H2_Bank.Models
 {
     public class OverdraftException : Exception
     {
-        public OverdraftException(string ex)
-        {
-            
-        }
+        public OverdraftException() : base(message:"Du har ikke nok kredit på din konto. Skovl")
+        {  }
     }
 }

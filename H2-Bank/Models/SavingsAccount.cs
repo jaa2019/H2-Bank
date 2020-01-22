@@ -7,6 +7,7 @@ namespace H2_Bank.Models
         /// Opretter en opsparingskonto
         /// </summary>
         /// <param name="name"></param>
+        /// <param name="accno">Kontonummer (incrementing constant)</param>
         public SavingsAccount(string name, int accno)
         {
             AccountHolder = name;
@@ -19,15 +20,15 @@ namespace H2_Bank.Models
         {
             if (AccountBalance < 50000)
             {
-                AccountBalance = AccountBalance * 1.01m;
+                AccountBalance *= 1.01m;
             }
             else if (AccountBalance > 50000 && AccountBalance < 100000)
             {
-                AccountBalance = AccountBalance * 1.02m;
+                AccountBalance *= 1.02m;
             }
             else if (AccountBalance > 100000)
             {
-                AccountBalance = AccountBalance * 1.03m;
+                AccountBalance *= 1.03m;
             }
         }
     }
