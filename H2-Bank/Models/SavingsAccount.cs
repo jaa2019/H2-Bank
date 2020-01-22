@@ -14,6 +14,7 @@ namespace H2_Bank.Models
             AccountNo = accno;
             AccountBalance = 0;
             AccountType = "Opsparingskonto";
+            AccountLimit = 0;
         }
 
         public override void ChargeInterest()

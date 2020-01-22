@@ -127,5 +127,20 @@ namespace H2_Bank.BLL
                 item.ChargeInterest();
             }
         }
+
+        /// <summary>
+        /// Går ud af et loop vha. en ConsoleKeyInfo
+        /// </summary>
+        /// <param name="x">Console.Readkey(true)</param>
+        /// <returns>True hvis brugeren taster X</returns>
+        /// Christians lille metode :)
+        public bool ExitError(ConsoleKeyInfo x)
+        {
+            if (x.Key == ConsoleKey.X)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

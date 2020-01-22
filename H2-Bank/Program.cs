@@ -6,6 +6,7 @@ using System.Linq;
 using H2_Bank.Models;
 using H2_Bank.BLL;
 using H2_Bank.Repository;
+using H2_Bank.Utilities;
 
 namespace H2_Bank
 {
@@ -112,8 +113,16 @@ namespace H2_Bank
                                     Console.WriteLine("Der er desværre sket en fejl");
                                     Console.WriteLine("Den konto du prøver at hæve fra findes ikke.");
                                     Console.WriteLine("Kontroller kontonummer, og prøv igen (tast X for at afbryde)");
-                                    ConsoleKeyInfo exit = Console.ReadKey(true);
-                                    if (exit.Key == ConsoleKey.X)
+                                    if (Console.ReadKey(true).Key == ConsoleKey.X)
+                                    {
+                                        break;
+                                    }
+                                    menuBool = false;
+                                }
+                                catch(OverdraftException e)
+                                {
+                                    Console.WriteLine(e.Message);
+                                    if (myBank.ExitError(Console.ReadKey(true)))
                                     {
                                         break;
                                     }
@@ -192,6 +201,11 @@ namespace H2_Bank
                         Console.ReadKey();
                         break;
                     #endregion
+                    #region - Viser logfilen
+                    case ConsoleKey.L:
+                        Console.WriteLine(FileLogger.ReadFromLog());
+                        break;
+                    #endregion
                     default:
                         break;
                 }
@@ -223,6 +237,7 @@ namespace H2_Bank
             Console.WriteLine("║       [I]ndsæt beløb      ║");
             Console.WriteLine("║       [H]æv beløb         ║");
             Console.WriteLine("║       [V]is saldo         ║");
+            Console.WriteLine("║       [L]og-check         ║");
             Console.WriteLine("║       [X] Afslut          ║");
             Console.WriteLine("╚═══════════════════════════╝");
         }
