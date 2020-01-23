@@ -6,8 +6,7 @@ namespace H2_Bank.Models
         /// <summary>
         /// Opretter en kredit-konto
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="accno">Kontonummer (incrementing constant)</param>
+        /// <param name="name">Navn på kontoholder</param>
         public MasterCardAccount(string name)
         {
             AccountHolder = name;
@@ -16,6 +15,12 @@ namespace H2_Bank.Models
             AccountLimit = -20000;
         }
 
+        /// <summary>
+        /// Opretter en kredit-konto efter indlæsning af datafil
+        /// </summary>
+        /// <param name="name">Navn på kontoholder</param>
+        /// <param name="accNum">Kontonummer</param>
+        /// <param name="balance">Balance på konto</param>
         public MasterCardAccount(string name, int accNum, decimal balance)
         {
             AccountHolder = name;
@@ -25,6 +30,9 @@ namespace H2_Bank.Models
             AccountNo = accNum;
         }
 
+        /// <summary>
+        /// Tilskriver rente efter fastsatte parametre
+        /// </summary>
         public override void ChargeInterest()
         {
             if (AccountBalance > 0)
