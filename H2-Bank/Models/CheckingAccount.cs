@@ -1,4 +1,6 @@
 ﻿using System;
+using H2_Bank.DAL;
+
 namespace H2_Bank.Models
 {
     public class CheckingAccount : Account
@@ -7,11 +9,9 @@ namespace H2_Bank.Models
         /// Laver en lønkonto.
         /// </summary>
         /// <param name="name">Kontoholders navn</param>
-        /// <param name="accno">Kontonummer (incrementing constant)</param>
-        public CheckingAccount(string name, int accno)
+        public CheckingAccount(string name)
         {
             AccountHolder = name;
-            AccountNo = accno;
             AccountBalance = 0;
             AccountType = "Lønkonto";
             AccountLimit = -5000;

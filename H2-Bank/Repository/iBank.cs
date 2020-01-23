@@ -8,8 +8,8 @@ namespace H2_Bank.Repository
     public interface iBank
     {
         public string BankName { get; }
-        public List<Account> Accounts { get; set; }
-        public int AccountNo { get; set; }
+//        public List<Account> accountList { get; set; }
+//        public int AccountNo { get; set; }
         public List<AccountListItem> GetAccountList();
     }
 }

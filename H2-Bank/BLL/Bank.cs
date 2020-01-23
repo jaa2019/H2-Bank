@@ -4,6 +4,7 @@ using H2_Bank.Models;
 using H2_Bank.Repository;
 using H2_Bank.Utilities;
 using H2_Bank;
+using H2_Bank.DAL;
 
 namespace H2_Bank.BLL
 {
@@ -12,13 +13,14 @@ namespace H2_Bank.BLL
     public class Bank : iBank
     {
         public string BankName { get; }
-        public List<Account> Accounts { get; set; }
-        public int AccountNo { get; set; }
+        int accNum;
+
+        FileRepository BankRepoFile = new FileRepository();
 
         public List<AccountListItem> GetAccountList()
         {
             List<AccountListItem> GUIList = new List<AccountListItem>();
-            foreach (Account item in Accounts)
+            foreach (Account item in BankRepoFile.accountList)
             {
                 GUIList.Add(new AccountListItem(item));
             }
@@ -34,7 +36,6 @@ namespace H2_Bank.BLL
         public Bank(string name)
         {
             BankName = name;
-            Accounts = new List<Account>();
         }
 
         /// <summary>
@@ -45,25 +46,23 @@ namespace H2_Bank.BLL
         /// <returns>Friendly-name på kontoen</returns>
         public string CreateAccount(string navn, AccountType type)
         {
-            //Forhøjet kontonummer med én
-            ++AccountNo;
             if (type == AccountType.checkingAccount)
             {
-                Accounts.Add(new CheckingAccount(navn, AccountNo));
+                accNum = BankRepoFile.AddAccount(new CheckingAccount(navn));
                 LoghandlerEvent("Der er oprettet en " + type.ToString() + " til " + navn);
-                return "Lønkonto";
+                return $"Lønkonto med kontonummer {accNum}";
             }
             else if (type == AccountType.masterCardAccount)
             {
-                Accounts.Add(new MasterCardAccount(navn, AccountNo));
+                accNum = BankRepoFile.AddAccount(new MasterCardAccount(navn));
                 LoghandlerEvent("Der er oprettet en " + type.ToString() + " til " + navn);
-                return "Kreditkortkonto";
+                return $"Kreditkortkonto med kontonummer {accNum}";
             }
             else if (type == AccountType.savingsAccount)
             {
-                Accounts.Add(new SavingsAccount(navn, AccountNo));
+                accNum = BankRepoFile.AddAccount(new SavingsAccount(navn));
                 LoghandlerEvent("Der er oprettet en " + type.ToString() + " til " + navn);
-                return "Opsparingskonto";
+                return $"Opsparingskonto med kontonummer {accNum}";
             }
             return null;
         }
@@ -75,7 +74,7 @@ namespace H2_Bank.BLL
         /// <param name="accountno">Kontonummer</param>
         public void Deposit(decimal amount, int accountno)
         {
-            Account searchAcc = Accounts.Find(x => x.AccountNo == accountno);
+            Account searchAcc = BankRepoFile.accountList.Find(x => x.AccountNo == accountno);
             searchAcc.AccountBalance += amount;
             LoghandlerEvent("SUCCESS! " + "+" + amount + " - " + searchAcc.AccountHolder + " - " + searchAcc.AccountType + " - " + searchAcc.AccountNo + " = " + searchAcc.AccountBalance);
 
@@ -90,7 +89,7 @@ namespace H2_Bank.BLL
         /// Kaser en exception hvis der ikke er nok dækning på kontoen.
         public bool Withdraw(decimal amount, int accountno)
         {
-            Account searchAcc = Accounts.Find(x => x.AccountNo == accountno);
+            Account searchAcc = BankRepoFile.accountList.Find(x => x.AccountNo == accountno);
 
             if (searchAcc.AccountType == "Lønkonto")
             {
@@ -148,7 +147,7 @@ namespace H2_Bank.BLL
         /// <returns>Decimal (kontobalance)</returns>
         public decimal Balance(int accountno)
         {
-            Account searchAcc = Accounts.Find(x => x.AccountNo == accountno);
+            Account searchAcc = BankRepoFile.accountList.Find(x => x.AccountNo == accountno);
             LoghandlerEvent("Balance check: " + searchAcc.AccountHolder + " " + searchAcc.AccountNo + " " + searchAcc.AccountType + " " + searchAcc.AccountBalance);
             return searchAcc.AccountBalance;
         }
@@ -159,7 +158,7 @@ namespace H2_Bank.BLL
         public void Interest()
         {
             LoghandlerEvent("Adding interest...");
-            foreach (Account item in Accounts)
+            foreach (Account item in BankRepoFile.accountList)
             {
                 LoghandlerEvent("Before: " + item.AccountNo + " - " + item.AccountType + " - " + item.AccountBalance);
                 item.ChargeInterest();

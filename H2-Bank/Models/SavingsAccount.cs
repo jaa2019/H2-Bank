@@ -8,10 +8,9 @@ namespace H2_Bank.Models
         /// </summary>
         /// <param name="name"></param>
         /// <param name="accno">Kontonummer (incrementing constant)</param>
-        public SavingsAccount(string name, int accno)
+        public SavingsAccount(string name)
         {
             AccountHolder = name;
-            AccountNo = accno;
             AccountBalance = 0;
             AccountType = "Opsparingskonto";
             AccountLimit = 0;

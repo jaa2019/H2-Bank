@@ -44,7 +44,7 @@ namespace H2_Bank
                         //Opretter given konto, og får en string retur med friendly name
                         string accTypeOut = myBank.CreateAccount(accNameInput, accType);
                         Console.WriteLine();
-                        Console.Write("Du har oprettet en {0} i {1}'s navn, den fik kontonummer {2}. Tast enter for at fortsætte", accTypeOut , accNameInput, myBank.AccountNo);
+                        Console.Write("Du har oprettet en {0} i {1}'s navn. Tast enter for at fortsætte", accTypeOut , accNameInput);
                         Console.ReadKey(true);
                         break;
                     #endregion
@@ -53,7 +53,7 @@ namespace H2_Bank
                         Console.WriteLine();
                         Console.WriteLine("Vælg hvilken konto du vil indsætte penge på: ");
                         //Løber alle konti igennem og viser det som en menu brugeren kan vælge
-                        foreach (Account item in myBank.Accounts)
+                        foreach (Account item in myBank.accountList)
                         {
                             Console.WriteLine("[{0}] - {1} - {2}",item.AccountNo,item.AccountType,item.AccountHolder);
                         }
@@ -64,7 +64,7 @@ namespace H2_Bank
                         //Prøver at konvertere og indsætte brugerens input
                         try
                         {
-                            myBank.Deposit(Convert.ToDecimal(decimalStrInput), myBank.Accounts.Find(s => s.AccountNo == Convert.ToInt16(accountNumInput)).AccountNo);
+                            myBank.Deposit(Convert.ToDecimal(decimalStrInput), myBank.accountList.Find(s => s.AccountNo == Convert.ToInt16(accountNumInput)).AccountNo);
                         }
                         catch (Exception ex)
                         {
@@ -85,7 +85,7 @@ namespace H2_Bank
                             Console.WriteLine();
                             Console.WriteLine("Vælg hvilken konto du vil hæve fra:");
                             //Løber alle konti igennem og viser dem som en menu hvor man kan vælge hvilken konto man vil hæve fra
-                            foreach (Account item in myBank.Accounts)
+                            foreach (Account item in myBank.accountList)
                             {
                                 Console.WriteLine("[{0}] - {1} - {2}", item.AccountNo, item.AccountType, item.AccountHolder);
                             }
@@ -101,7 +101,7 @@ namespace H2_Bank
                                 try
                                 {
                                     //TRUE bliver returneret af withdraw() om transaktionen blev gennemført
-                                    if (myBank.Withdraw(decimalDecInput, myBank.Accounts.Find(s => s.AccountNo == Convert.ToInt16(accountNumInput)).AccountNo) == true)
+                                    if (myBank.Withdraw(decimalDecInput, myBank.accountList.Find(s => s.AccountNo == Convert.ToInt16(accountNumInput)).AccountNo) == true)
                                     {
                                         Console.WriteLine("Du har hævet -{0}, saldoen er nu {1} - Tast enter for at fortsætte", decimalStrInput, myBank.Balance(Convert.ToInt16(accountNumInput)));
                                         Console.ReadKey(true);
@@ -151,7 +151,7 @@ namespace H2_Bank
                         Console.WriteLine("Vælg hvilken konto du vil se saldo for:");
                         Console.WriteLine("[A]lle konti");
                         //Løber alle konti igennem
-                        foreach (Account item in myBank.Accounts)
+                        foreach (Account item in myBank.accountList)
                         {
                             Console.WriteLine("[{0}] - {1}", item.AccountNo, item.AccountHolder);
                         }
@@ -160,7 +160,7 @@ namespace H2_Bank
                         //Hvis brugeren taster A, bliver saldi vist for alle konti.
                         if (accountNumInput == "A" | accountNumInput == "a")
                         {
-                            foreach (Account item in myBank.Accounts)
+                            foreach (Account item in myBank.accountList)
                             {
                                 Console.WriteLine("{0} - {1} - {2} - {3}",item.AccountNo, item.AccountHolder, item.AccountType, item.AccountBalance);
                             }
@@ -170,7 +170,7 @@ namespace H2_Bank
                             try
                             {
                                 //Finder den konto brugeren søgte på
-                                Account searchAcc = myBank.Accounts.Find(s => s.AccountNo == Convert.ToInt16(accountNumInput));
+                                Account searchAcc = myBank.accountList.Find(s => s.AccountNo == Convert.ToInt16(accountNumInput));
                                 Console.WriteLine("Saldoen på {0} ({1}) er: {2}", searchAcc.AccountHolder, searchAcc.AccountType, searchAcc.AccountBalance);
                             }
                             catch (Exception ex)
