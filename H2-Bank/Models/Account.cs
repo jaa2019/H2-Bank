@@ -1,6 +1,7 @@
 ﻿using System;
 namespace H2_Bank.Models
 
+    // Abstract class til nedarv af underklasser
 {
     public abstract class Account
     {
