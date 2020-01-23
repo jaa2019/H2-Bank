@@ -4,6 +4,9 @@ using System.Reflection;
 
 namespace H2_Bank.Models
 {
+    /// <summary>
+    /// Enumeration af konti, inklusiv friendly name og INT val på kontotype
+    /// </summary>
     public enum AccountType
     {
         [Description("Lønkonto")]
