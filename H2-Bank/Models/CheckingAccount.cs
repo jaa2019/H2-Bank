@@ -6,9 +6,9 @@ namespace H2_Bank.Models
     public class CheckingAccount : Account
     {
         /// <summary>
-        /// Laver en lønkonto.
+        /// Opretter en lønkonto
         /// </summary>
-        /// <param name="name">Kontoholders navn</param>
+        /// <param name="name">Navn på kontoholder</param>
         public CheckingAccount(string name)
         {
             AccountHolder = name;
@@ -17,6 +17,13 @@ namespace H2_Bank.Models
             AccountLimit = -5000;
         }
 
+
+        /// <summary>
+        /// Opretter en lønkonto efter import af datafil
+        /// </summary>
+        /// <param name="name">Navn på kontoholder</param>
+        /// <param name="accNum">Kontonummer</param>
+        /// <param name="balance">Balance på konto</param>
         public CheckingAccount(string name, int accNum, decimal balance)
         {
             AccountHolder = name;
@@ -26,6 +33,9 @@ namespace H2_Bank.Models
             AccountNo = accNum;
         }
 
+        /// <summary>
+        /// Tilskriver rente efter fastsatte parametre
+        /// </summary>
         public override void ChargeInterest()
         {
             AccountBalance *= 1.005m;
