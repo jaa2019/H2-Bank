@@ -12,12 +12,19 @@ namespace H2_Bank.DAL
         public List<Account> accountList { get; set; }
         public int accountNumberCounter { get; set; }
 
-
+        /// <summary>
+        /// Opretter en liste af konti
+        /// </summary>
         public FileRepository()
         {
             accountList = new List<Account>();
         }
 
+        /// <summary>
+        /// Tilføjer nye konti til listen
+        /// </summary>
+        /// <param name="account">Konto (object)</param>
+        /// <returns></returns>
         public int AddAccount(Account account)
         {
             ++accountNumberCounter;
@@ -26,11 +33,20 @@ namespace H2_Bank.DAL
             return account.AccountNo;
         }
 
+        /// <summary>
+        /// Henter konto - ej implementeret TODO
+        /// </summary>
+        /// <param name="id">ID på konto (nummer)</param>
+        /// <returns></returns>
         public Account GetAccount(int id)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Fremtryller en liste over alle konti
+        /// </summary>
+        /// <returns>List af typen "AccountListItem"</returns>
         public List<AccountListItem> GetAccountList()
         {
             List<AccountListItem> GUIList = new List<AccountListItem>();
@@ -41,13 +57,21 @@ namespace H2_Bank.DAL
             return GUIList;
         }
 
+        /// <summary>
+        /// Henter alle konti - ej implementeret TODO
+        /// </summary>
+        /// <returns>Liste af typen "Account"</returns>
         public List<Account> GetAllAccounts()
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Indlæser banken fra datafil.data
+        /// </summary>
         public void LoadBank()
         {
+            // Kigger i nuværende directory
             DirectoryInfo findBankAcc = new DirectoryInfo(Environment.CurrentDirectory);
             findBankAcc.GetFiles();
             foreach (FileInfo filer in findBankAcc.GetFiles())
@@ -78,6 +102,9 @@ namespace H2_Bank.DAL
             }
         }
 
+        /// <summary>
+        /// Gemmer banken ved soft-exit
+        /// </summary>
         public void SaveBank()
         {
             string bankAccounts = "";
@@ -89,6 +116,10 @@ namespace H2_Bank.DAL
             File.WriteAllText(fileName, bankAccounts);
         }
 
+        /// <summary>
+        /// Opdaterer saldo på konto - ej implementeret TODO
+        /// </summary>
+        /// <param name="acc"></param>
         public void UpdateAccount(Account acc)
         {
             throw new NotImplementedException();
