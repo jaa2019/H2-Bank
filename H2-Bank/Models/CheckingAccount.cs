@@ -17,12 +17,12 @@ namespace H2_Bank.Models
             AccountLimit = -5000;
         }
 
-        public CheckingAccount(string name, string accType, int accNum, decimal limit, decimal balance)
+        public CheckingAccount(string name, int accNum, decimal balance)
         {
             AccountHolder = name;
             AccountBalance = balance;
-            AccountType = accType;
-            AccountLimit = limit;
+            AccountType = "Lønkonto";
+            AccountLimit = -5000;
             AccountNo = accNum;
         }
 

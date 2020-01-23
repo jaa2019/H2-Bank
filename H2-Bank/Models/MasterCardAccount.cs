@@ -16,12 +16,12 @@ namespace H2_Bank.Models
             AccountLimit = -20000;
         }
 
-        public MasterCardAccount(string name, string accType, int accNum, decimal limit, decimal balance)
+        public MasterCardAccount(string name, int accNum, decimal balance)
         {
             AccountHolder = name;
             AccountBalance = balance;
-            AccountType = accType;
-            AccountLimit = limit;
+            AccountType = "Kreditkortkonto";
+            AccountLimit = -20000;
             AccountNo = accNum;
         }
 

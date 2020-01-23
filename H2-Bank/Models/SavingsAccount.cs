@@ -16,12 +16,12 @@ namespace H2_Bank.Models
             AccountLimit = 0;
         }
 
-        public SavingsAccount(string name, string accType, int accNum, decimal limit, decimal balance)
+        public SavingsAccount(string name, int accNum, decimal balance)
         {
             AccountHolder = name;
             AccountBalance = balance;
-            AccountType = accType;
-            AccountLimit = limit;
+            AccountType = "Opsparingskonto";
+            AccountLimit = 0;
             AccountNo = accNum;
         }
 

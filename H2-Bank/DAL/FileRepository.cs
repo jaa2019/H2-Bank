@@ -62,15 +62,15 @@ namespace H2_Bank.DAL
 
                         if (parseACC[1] == "Lønkonto")
                         {
-                            accountList.Add(new CheckingAccount(parseACC[0], parseACC[1], Convert.ToInt16(parseACC[2]), Convert.ToDecimal(parseACC[3]), Convert.ToDecimal(parseACC[4])));
+                            accountList.Add(new CheckingAccount(parseACC[0], Convert.ToInt16(parseACC[1]), Convert.ToDecimal(parseACC[2])));
                         }
                         else if (parseACC[1] == "Opsparingskonto")
                         {
-                            accountList.Add(new SavingsAccount(parseACC[0], parseACC[1], Convert.ToInt16(parseACC[2]), Convert.ToDecimal(parseACC[3]), Convert.ToDecimal(parseACC[4])));
+                            accountList.Add(new SavingsAccount(parseACC[0], Convert.ToInt16(parseACC[1]), Convert.ToDecimal(parseACC[2])));
                         }
                         else if (parseACC[1] == "Kreditkortkonto")
                         {
-                            accountList.Add(new MasterCardAccount(parseACC[0], parseACC[1], Convert.ToInt16(parseACC[2]), Convert.ToDecimal(parseACC[3]), Convert.ToDecimal(parseACC[4])));
+                            accountList.Add(new MasterCardAccount(parseACC[0], Convert.ToInt16(parseACC[1]), Convert.ToDecimal(parseACC[2])));
                         }
                     }
                     accountNumberCounter = parseFile.Length;
@@ -83,7 +83,7 @@ namespace H2_Bank.DAL
             string bankAccounts = "";
             foreach (Account item in accountList)
             {
-                bankAccounts += item.AccountHolder + ";" + item.AccountType + ";" + item.AccountNo + ";" + item.AccountLimit + ";" + item.AccountBalance + ":";
+                bankAccounts += item.AccountHolder + ";" + item.AccountType + ";" + item.AccountNo + ";" + ";" + item.AccountBalance + ":";
             }
             bankAccounts = bankAccounts.TrimEnd(':');
             File.WriteAllText(fileName, bankAccounts);
