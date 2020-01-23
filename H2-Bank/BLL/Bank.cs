@@ -15,19 +15,26 @@ namespace H2_Bank.BLL
         public string BankName { get; }
         int accNum;
 
-        FileRepository BankRepoFile = new FileRepository();                     //Istancierer et object af FileRepository
+        //Istancierer et object af FileRepository
+        FileRepository BankRepoFile = new FileRepository();
+        //Istancierer LoghandlerEvent
+        LogHandlerDelegate LoghandlerEvent = Bank_LoghandlerEvent;
 
+
+        /// <summary>
+        /// Metode til at hente alle konti
+        /// </summary>
+        /// <returns>Liste af typen "AccountListItem"</returns>
         public List<AccountListItem> GetAccountList()
         {
             return BankRepoFile.GetAccountList();
         }
 
-        LogHandlerDelegate LoghandlerEvent = Bank_LoghandlerEvent;
-
         /// <summary>
         /// Instancierer banken
         /// </summary>
         /// <param name="name">Navnet på din bank</param>
+        /// Kalder metoden LoadBank() som indlæser banken fra datafil
         public Bank(string name)
         {
             BankName = name;
@@ -140,7 +147,7 @@ namespace H2_Bank.BLL
         /// <summary>
         /// Viser saldo på den konto der er valgt
         /// </summary>
-        /// <param name="accountno">Kont</param>
+        /// <param name="accountno">Kontonummer</param>
         /// <returns>Decimal (kontobalance)</returns>
         public decimal Balance(int accountno)
         {
@@ -196,5 +203,5 @@ namespace H2_Bank.BLL
             LoghandlerEvent("Gemer bank ...");
             BankRepoFile.SaveBank();
         }
-   }
+    }
 }
