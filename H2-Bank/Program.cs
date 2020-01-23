@@ -20,11 +20,12 @@ namespace H2_Bank
             bool menuBool = false;                                              //En bolsk værdi der bliver sat ved try/catch hvis brugeren vælger at prøve igen
             ConsoleKeyInfo menuKey;
 
-
+            // Istancierer banken med et navn
             Bank myBank = new Bank("Jan's Bank");
+
             do
             {
-                Menu();
+                Menu(); //Kalder menuen
                 menuKey = Console.ReadKey(true);
                 switch (menuKey.Key)
                 {
@@ -162,7 +163,7 @@ namespace H2_Bank
                         {
                             foreach (AccountListItem item in myBank.GetAccountList())
                             {
-                                Console.WriteLine("{0} - {1} - {2} - {3}",item.AccountNo, item.AccountHolder, item.AccountType, item.AccountBalance);
+                                Console.WriteLine("{0} - {1} - {2} - {3}",item.AccountNo, item.AccountHolder, item.AccountType, myBank.Balance(item.AccountNo));
                             }
                         }
                         else
@@ -171,7 +172,7 @@ namespace H2_Bank
                             {
                                 //Finder den konto brugeren søgte på
                                 AccountListItem searchAcc = myBank.GetAccountList().Find(s => s.AccountNo == Convert.ToInt16(accountNumInput));
-                                Console.WriteLine("Saldoen på {0} ({1}) er: {2}", searchAcc.AccountHolder, searchAcc.AccountType, searchAcc.AccountBalance);
+                                Console.WriteLine("Saldoen på {0} ({1}) er: {2}", searchAcc.AccountHolder, searchAcc.AccountType, myBank.Balance(searchAcc.AccountNo));
                             }
                             catch (Exception ex)
                             {
@@ -248,4 +249,3 @@ namespace H2_Bank
 }
 
 //TODO - Eventuelt tilføje en do/while på alle menupunkter ved fejl, så brugeren kan prøve igen uden at blive smidt retur til hovedmenuen
-//TODO - Balancecheck fixerupper
