@@ -16,6 +16,15 @@ namespace H2_Bank.Models
             AccountLimit = 0;
         }
 
+        public SavingsAccount(string name, string accType, int accNum, decimal limit, decimal balance)
+        {
+            AccountHolder = name;
+            AccountBalance = balance;
+            AccountType = accType;
+            AccountLimit = limit;
+            AccountNo = accNum;
+        }
+
         public override void ChargeInterest()
         {
             if (AccountBalance < 50000)

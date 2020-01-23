@@ -15,16 +15,11 @@ namespace H2_Bank.BLL
         public string BankName { get; }
         int accNum;
 
-        FileRepository BankRepoFile = new FileRepository();
+        FileRepository BankRepoFile = new FileRepository();                     //Istancierer et object af FileRepository
 
         public List<AccountListItem> GetAccountList()
         {
-            List<AccountListItem> GUIList = new List<AccountListItem>();
-            foreach (Account item in BankRepoFile.accountList)
-            {
-                GUIList.Add(new AccountListItem(item));
-            }
-            return GUIList;
+            return BankRepoFile.GetAccountList();
         }
 
         LogHandlerDelegate LoghandlerEvent = Bank_LoghandlerEvent;
@@ -36,6 +31,8 @@ namespace H2_Bank.BLL
         public Bank(string name)
         {
             BankName = name;
+            BankRepoFile.LoadBank();
+            LoghandlerEvent("Indlæser bank ...");
         }
 
         /// <summary>
@@ -189,6 +186,15 @@ namespace H2_Bank.BLL
         static void Bank_LoghandlerEvent(string msg)
         {
             FileLogger.WriteToLog(msg);
+        }
+
+        /// <summary>
+        /// Lukker programmet med exit code 0 og gemmer alle konti
+        /// </summary>
+        public void ExitProgram()
+        {
+            LoghandlerEvent("Gemer bank ...");
+            BankRepoFile.SaveBank();
         }
    }
 }
