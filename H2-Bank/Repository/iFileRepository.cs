@@ -10,7 +10,7 @@ namespace H2_Bank.Repository
         Account GetAccount(int id);
         List<AccountListItem> GetAccountList();
         List<Account> GetAllAccounts();
-//        List<Account> LoadBank();
+        void LoadBank();
         void SaveBank();
         void UpdateAccount(Account acc);
     }
