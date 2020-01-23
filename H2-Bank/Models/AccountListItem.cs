@@ -11,6 +11,10 @@ namespace H2_Bank.Models
         public decimal AccountBalance { get; }     // Kontobalance, bliver sat til 0
         public int AccountNo { get; }              // Kontonummer
 
+        /// <summary>
+        /// Er ikke helt sikker på hvad det precist er denne gør. Tilføjer vistnok parametre til nye konti?
+        /// </summary>
+        /// <param name="acc">Konto (object)</param>
         public AccountListItem(Account acc)
         {
             AccountHolder = acc.AccountHolder;
