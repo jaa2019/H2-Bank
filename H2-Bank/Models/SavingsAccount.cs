@@ -6,8 +6,7 @@ namespace H2_Bank.Models
         /// <summary>
         /// Opretter en opsparingskonto
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="accno">Kontonummer (incrementing constant)</param>
+        /// <param name="name">Navn på kontohaver</param>
         public SavingsAccount(string name)
         {
             AccountHolder = name;
@@ -16,6 +15,12 @@ namespace H2_Bank.Models
             AccountLimit = 0;
         }
 
+        /// <summary>
+        /// Opretter en opsparingskonto fra datafil
+        /// </summary>
+        /// <param name="name">Navn på kontohaver</param>
+        /// <param name="accNum">Kontonummer</param>
+        /// <param name="balance">Balancen på konto</param>
         public SavingsAccount(string name, int accNum, decimal balance)
         {
             AccountHolder = name;
@@ -25,6 +30,9 @@ namespace H2_Bank.Models
             AccountNo = accNum;
         }
 
+        /// <summary>
+        /// Tilskriver rente på konti efter fastsatte parametre
+        /// </summary>
         public override void ChargeInterest()
         {
             if (AccountBalance < 50000)
