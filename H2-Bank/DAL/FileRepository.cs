@@ -73,6 +73,7 @@ namespace H2_Bank.DAL
                             accountList.Add(new MasterCardAccount(parseACC[0], parseACC[1], Convert.ToInt16(parseACC[2]), Convert.ToDecimal(parseACC[3]), Convert.ToDecimal(parseACC[4])));
                         }
                     }
+                    accountNumberCounter = parseFile.Length;
                 }
             }
         }
