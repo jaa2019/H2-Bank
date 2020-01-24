@@ -35,10 +35,11 @@ namespace H2_Bank
                         Console.Write("Indtast navn på kontohaver: ");
                         string accNameInput = Console.ReadLine();
                         //Løber alle de tilgængelige konti typer igennem, og viser dem som en "menu"
-                        foreach (int item in Enum.GetValues(typeof(AccountType)))
+                        foreach (string item in myBank.GetAccType())
                         {
-                            Console.WriteLine("["+item+"]" + " " + Enum.GetName(typeof(AccountType), item));
+                            Console.WriteLine(item);
                         }
+                        
                         Console.Write("Indtast kontotype: ");
                         string accTypeInput = Console.ReadLine();
                         AccountType accType = (AccountType)Enum.Parse(typeof(AccountType), accTypeInput);

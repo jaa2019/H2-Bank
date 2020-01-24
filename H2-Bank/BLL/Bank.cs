@@ -30,6 +30,16 @@ namespace H2_Bank.BLL
             return BankRepoFile.GetAccountList();
         }
 
+        public string[] GetAccType()
+        {
+            string[] result = new string[3];
+            foreach (int item in Enum.GetValues(typeof(AccountType)))
+            {
+                result[item-1] = ("[" + item + "]" + " " + Enum.GetName(typeof(AccountType), item));
+            }
+            return result;
+        }
+
         /// <summary>
         /// Instancierer banken
         /// </summary>
