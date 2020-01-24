@@ -34,13 +34,14 @@ namespace H2_Bank.DAL
         }
 
         /// <summary>
-        /// Henter konto - ej implementeret TODO
+        /// Henter konto på kontonummer
         /// </summary>
         /// <param name="id">ID på konto (nummer)</param>
-        /// <returns></returns>
+        /// <returns>Konto (objekt)</returns>
         public Account GetAccount(int id)
         {
-            throw new NotImplementedException();
+            Account searchAcc = accountList.Find(s => s.AccountNo == id);
+            return searchAcc;
         }
 
         /// <summary>
@@ -63,7 +64,12 @@ namespace H2_Bank.DAL
         /// <returns>Liste af typen "Account"</returns>
         public List<Account> GetAllAccounts()
         {
-            throw new NotImplementedException();
+            List<Account> result = new List<Account>();
+            //foreach (Account item in accountList)
+            //{
+            //    result.Add(new Account(item));
+            //}
+            return result;
         }
 
         /// <summary>

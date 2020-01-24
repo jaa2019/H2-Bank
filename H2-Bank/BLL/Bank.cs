@@ -92,7 +92,7 @@ namespace H2_Bank.BLL
         /// <param name="accountno">Kontonummer</param>
         public void Deposit(decimal amount, int accountno)
         {
-            Account searchAcc = BankRepoFile.accountList.Find(x => x.AccountNo == accountno);
+            Account searchAcc = BankRepoFile.GetAccount(accountno);
             searchAcc.AccountBalance += amount;
             LoghandlerEvent("SUCCESS! " + "+" + amount + " - " + searchAcc.AccountHolder + " - " + searchAcc.AccountType + " - " + searchAcc.AccountNo + " = " + searchAcc.AccountBalance);
             BankRepoFile.UpdateAccount(searchAcc);
@@ -107,7 +107,7 @@ namespace H2_Bank.BLL
         /// Kaser en exception hvis der ikke er nok dækning på kontoen.
         public bool Withdraw(decimal amount, int accountno)
         {
-            Account searchAcc = BankRepoFile.accountList.Find(x => x.AccountNo == accountno);
+            Account searchAcc = BankRepoFile.GetAccount(accountno);
 
             if (searchAcc.AccountType == "Lønkonto")
             {
@@ -168,7 +168,7 @@ namespace H2_Bank.BLL
         /// <returns>Decimal (kontobalance)</returns>
         public decimal Balance(int accountno)
         {
-            Account searchAcc = BankRepoFile.accountList.Find(x => x.AccountNo == accountno);
+            Account searchAcc = BankRepoFile.GetAccount(accountno);
             LoghandlerEvent("Balance check: " + searchAcc.AccountHolder + " " + searchAcc.AccountNo + " " + searchAcc.AccountType + " " + searchAcc.AccountBalance);
             return searchAcc.AccountBalance;
         }

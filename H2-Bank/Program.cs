@@ -219,19 +219,6 @@ namespace H2_Bank
         static void Menu()
         {
             Console.Clear();
-            Console.WriteLine("             _.-------._		");
-            Console.WriteLine("          _-'_.------._ `-_	");
-            Console.WriteLine("        _- _-          `-_/	");
-            Console.WriteLine("       -  -					");
-            Console.WriteLine("   ___/  /______________		");
-            Console.WriteLine("  /___  .______________/		");
-            Console.WriteLine("   ___| |_____________		");
-            Console.WriteLine("  /___  .____________/		");
-            Console.WriteLine(@"      \  \					");
-            Console.WriteLine("       -_ -_             /|  ");
-            Console.WriteLine("         -_ -._        _- |	");
-            Console.WriteLine("           -._ `------'_./   ");
-            Console.WriteLine("              `-------'		");
             Console.WriteLine("╔═══════════════════════════╗");
             Console.WriteLine("║ Velkommen til Jan's Bank! ║");
             Console.WriteLine("╠═══════════════════════════╣");
