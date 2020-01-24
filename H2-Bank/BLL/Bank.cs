@@ -218,7 +218,7 @@ namespace H2_Bank.BLL
         /// </summary>
         public void ExitProgram()
         {
-            LoghandlerEvent("Gemer bank ...");
+            LoghandlerEvent("Gemmer bank ...");
             BankRepoFile.SaveBank();
         }
     }
