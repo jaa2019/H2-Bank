@@ -30,12 +30,16 @@ namespace H2_Bank.BLL
             return BankRepoFile.GetAccountList();
         }
 
-        public string[] GetAccType()
+        /// <summary>
+        /// Henter en liste over kontityper fra Enum(AccountType)
+        /// </summary>
+        /// <returns>Liste af strings(AccountType)</returns>
+        public List<string> GetAccType()
         {
-            string[] result = new string[3];
+            List<string> result = new List<string>();
             foreach (int item in Enum.GetValues(typeof(AccountType)))
             {
-                result[item-1] = ("[" + item + "]" + " " + Enum.GetName(typeof(AccountType), item));
+                result.Add("[" + item + "]" + " " + Enum.GetName(typeof(AccountType), item));
             }
             return result;
         }
@@ -91,7 +95,7 @@ namespace H2_Bank.BLL
             Account searchAcc = BankRepoFile.accountList.Find(x => x.AccountNo == accountno);
             searchAcc.AccountBalance += amount;
             LoghandlerEvent("SUCCESS! " + "+" + amount + " - " + searchAcc.AccountHolder + " - " + searchAcc.AccountType + " - " + searchAcc.AccountNo + " = " + searchAcc.AccountBalance);
-
+            BankRepoFile.UpdateAccount(searchAcc);
         }
 
         /// <summary>
@@ -111,6 +115,7 @@ namespace H2_Bank.BLL
                 {
                     searchAcc.AccountBalance -= amount;
                     LoghandlerEvent("SUCCESS! " + "-" + amount + " - " + searchAcc.AccountHolder + " - " + searchAcc.AccountType + " - " + searchAcc.AccountNo + " = " + searchAcc.AccountBalance);
+                    BankRepoFile.UpdateAccount(searchAcc);
                     return true;
                 }
                 else
@@ -125,6 +130,7 @@ namespace H2_Bank.BLL
                 {
                     searchAcc.AccountBalance -= amount;
                     LoghandlerEvent("SUCCESS! " + "-" + amount + " - " + searchAcc.AccountHolder + " - " + searchAcc.AccountType + " - " + searchAcc.AccountNo + " = " + searchAcc.AccountBalance);
+                    BankRepoFile.UpdateAccount(searchAcc);
                     return true;
                 }
                 else
@@ -139,6 +145,7 @@ namespace H2_Bank.BLL
                 {
                     searchAcc.AccountBalance -= amount;
                     LoghandlerEvent("SUCCESS! " + "-" + amount + " - " + searchAcc.AccountHolder + " - " + searchAcc.AccountType + " - " + searchAcc.AccountNo + " = " + searchAcc.AccountBalance);
+                    BankRepoFile.UpdateAccount(searchAcc);
                     return true;
                 }
                 else
@@ -177,6 +184,7 @@ namespace H2_Bank.BLL
                 LoghandlerEvent("Before: " + item.AccountNo + " - " + item.AccountType + " - " + item.AccountBalance);
                 item.ChargeInterest();
                 LoghandlerEvent("After: " + item.AccountNo + " - " + item.AccountType + " - " + item.AccountBalance);
+                BankRepoFile.UpdateAccount(item);
             }
             LoghandlerEvent("Job completed ...");
         }

@@ -117,12 +117,12 @@ namespace H2_Bank.DAL
         }
 
         /// <summary>
-        /// Opdaterer saldo på konto - ej implementeret TODO
+        /// Opdaterer saldo på konto i CSV-fil
         /// </summary>
-        /// <param name="acc"></param>
+        /// <param name="acc">Konto</param>
         public void UpdateAccount(Account acc)
         {
-            throw new NotImplementedException();
+            SaveBank();
         }
     }
 }

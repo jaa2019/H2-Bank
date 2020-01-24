@@ -39,7 +39,6 @@ namespace H2_Bank
                         {
                             Console.WriteLine(item);
                         }
-                        
                         Console.Write("Indtast kontotype: ");
                         string accTypeInput = Console.ReadLine();
                         AccountType accType = (AccountType)Enum.Parse(typeof(AccountType), accTypeInput);
